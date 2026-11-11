@@ -1,95 +1,152 @@
-# ICU Pain & Recovery Assistant
-### An AI-assisted research prototype for postoperative pain and early mobilisation risk
 
-[![Status](https://img.shields.io/badge/status-research%20prototype-blue)](#project-status)
-[![Data](https://img.shields.io/badge/data-synthetic-orange)](#data-and-privacy)
-[![Clinical validation](https://img.shields.io/badge/clinical%20validation-not%20performed-lightgrey)](#limitations)
+# ICU Recovery Research Console
+### An AI-assisted research prototype for exploring postoperative recovery
 
-## Overview
-The ICU Pain & Recovery Assistant is a research-oriented software prototype exploring how machine learning and evidence-retrieval workflows could support investigation of two early postoperative recovery risks:
+An interdisciplinary research and software-development project exploring how machine learning, explainable AI, and evidence retrieval can support research into postoperative recovery.
 
-1. **Uncontrolled postoperative pain**
-2. **Delayed first mobilisation**
+The project focuses on two prediction tasks:
+- Uncontrolled postoperative pain
+- Delayed first mobilisation
 
-The project combines tabular machine-learning models, explainability methods, retrieval-augmented generation (RAG), and an LLM-assisted evidence workflow. Its research motivation is to explore how structured observations and relevant evidence might support investigation of postoperative recovery.
+It integrates predictive modelling with an evidence-assisted AI workflow in a locally deployable software environment.
 
-**This is an experimental prototype. It is not a medical device, a clinically validated decision-support system, or a tool for patient care.**
+> **Research status:** This is a research prototype evaluated using entirely synthetic data. It has not undergone clinical validation and must not be used for patient-care decisions.
 
-## Research questions
-- Can structured postoperative variables discriminate between outcome classes in this synthetic dataset?
-- How do interpretable baseline models compare with tree-based models?
-- Can model explanations make predictions easier to inspect?
-- Can retrieved clinical documents be connected to an LLM workflow with visible source passages and checks for unsupported responses?
+---
 
-## Dataset and reported results
-The current project description reports **5,000 synthetic patient records** and **53,550 longitudinal observation records**.
+## Research motivation
 
-| Prediction task | Selected model | AUROC | AUPRC |
+Postoperative recovery involves multiple interacting factors, including pain, sedation, physiological status, medication exposure, and functional recovery.
+
+This project explores a technology-enabled approach to organising these data and investigating whether machine-learning methods can identify patterns associated with selected recovery outcomes.
+
+The broader research motivation is to connect clinical experience in anesthesia and perioperative care with digital health, personalized recovery research, and rehabilitation technology.
+
+## Main components
+
+### 1. Synthetic clinical dataset
+- 5,000 simulated patients
+- 53,550 longitudinal observation records
+- Repeated postoperative observations
+- Patient-level training and test separation
+- Synthetic clinical variables and outcome labels
+
+### 2. Machine-learning experiments
+The project explores prediction of:
+- Uncontrolled postoperative pain
+- Delayed first mobilisation
+
+Candidate algorithms include:
+- Logistic Regression
+- Random Forest
+- Histogram-based Gradient Boosting
+
+### 3. Explainable AI
+Model interpretation includes:
+- Feature importance
+- SHAP-based analysis
+
+### 4. Evidence retrieval
+A retrieval-augmented generation (RAG) workflow uses indexed evidence passages and source provenance to support evidence-oriented responses.
+
+### 5. AI agent workflow
+A LangGraph-based workflow integrates:
+- Query classification
+- Synthetic patient context
+- Data validation
+- Model predictions
+- Evidence retrieval
+- Response generation
+- Safety verification
+
+The workflow includes safeguards against unsupported evidence claims and treatment or order instructions.
+
+## Preliminary model results
+
+The following are reported held-out test results from experiments using the synthetic dataset.
+
+| Prediction task | Model | AUROC | AUPRC |
 |---|---|---:|---:|
 | Uncontrolled postoperative pain | Logistic Regression | 0.746 | 0.682 |
 | Delayed first mobilisation | Logistic Regression | 0.637 | 0.580 |
 
-These are reported held-out test results on synthetic data only. They do not estimate performance in a real hospital population, establish clinical utility, or demonstrate improved patient outcomes. AUPRC should be interpreted alongside event prevalence.
+These results describe performance on simulated data only. They do not establish clinical accuracy, generalizability, or clinical utility. AUPRC should also be interpreted in relation to the positive-class prevalence.
 
-## Methods and technical components
-- **Models:** Logistic Regression, Random Forest and Histogram-based Gradient Boosting.
-- **Evaluation:** patient-level train/validation/test split, grouped five-fold cross-validation, hyperparameter optimisation, ROC/PR analysis, calibration and confusion matrices.
-- **Explainability:** feature importance and SHAP.
-- **Agent workflow:** LangGraph orchestration and local LLM inference through Ollama.
-- **Evidence layer:** PostgreSQL with pgvector, retrieval-augmented generation, passage/citation checks and missing-information prompts.
-- **Application:** Python, scikit-learn, SHAP, FastAPI, React and TypeScript.
+## Technology stack
 
-## Architecture
-See [Architecture](docs/ARCHITECTURE.md) for component, modelling and evidence-flow diagrams.
+| Component | Technologies |
+|---|---|
+| Backend | Python, FastAPI |
+| Frontend | React, TypeScript, Vite |
+| Database | PostgreSQL, pgvector |
+| Database migrations | SQLAlchemy, Alembic |
+| Machine learning | scikit-learn |
+| Explainability | SHAP |
+| Agent orchestration | LangGraph |
+| Local language models | Ollama |
+| Embeddings | nomic-embed-text |
+| Evidence extraction | PyMuPDF |
+| Visualization | Recharts |
+| Deployment support | Docker Compose |
 
-## Intended research workflow
-1. Define the outcome and prediction time.
-2. Prepare synthetic patient and longitudinal observation data.
-3. Split data at patient level to reduce leakage across repeated observations.
-4. Train and tune candidate models within training data.
-5. Evaluate on held-out patients using discrimination, precision-recall, calibration and error metrics.
-6. Inspect model behaviour and feature contributions.
-7. Retrieve relevant documents for evidence-assisted exploration.
-8. Review outputs critically; do not use them for patient-care decisions.
+## Demonstration and testing
+
+The project demonstration report dated November 4, 2026 documents:
+- 38 passing backend tests
+- A successful frontend production build
+- A local integration of the frontend, backend, database, machine-learning and evidence-retrieval components
+- A synthetic dataset imported into PostgreSQL with pgvector
+- A demonstration of citation verification that withheld an AI-generated draft when its citations could not be verified
+
+These are software integration and testing results, not clinical validation.
+
+See [research_demonstration_report.md](research_demonstration_report.md).
+
+## Repository structure
+
+```text
+.
+├── backend/
+├── frontend/
+├── data/
+├── docs/
+├── README.md
+├── research_demonstration_report.md
+├── spec.md
+└── spec_change_summary.md
+```
+
+The `docs/` directory contains the research methodology, architecture, evaluation, reproducibility, and limitations documentation.
+
+## Research limitations
+
+- All patient records are synthetic.
+- Simulated relationships are not calibrated to real clinical populations.
+- Model results cannot be interpreted as real-world clinical performance.
+- The project is not a medical device or validated clinical decision-support system.
+- The AI workflow does not replace clinical judgement.
+- Further research requires appropriate real-world datasets, external validation, and clinical collaboration.
+
+## Future research directions
+
+Potential directions include:
+- Validation using appropriately governed clinical datasets
+- Improved temporal modelling of postoperative recovery
+- Personalized risk estimation
+- Integration of functional recovery and mobility measures
+- Exploration of links between postoperative recovery and technology-enabled rehabilitation
+- Prospective evaluation with clinical and rehabilitation researchers
+
+## Author's research interests
+
+This project reflects an interest in the intersection of:
+
+- Digital health and clinical AI
+- Postoperative and critical-care recovery
+- Explainable machine learning
+- Evidence-assisted clinical research
+- Technology-enabled personalized rehabilitation
 
 ## Project status
-**Research prototype.** This is an individual research-oriented prototype developed to explore critical care, postoperative recovery, machine learning and evidence-assisted clinical workflows. AI coding tools, including Codex, were used to support parts of implementation and debugging. This is not a claim of sole manual implementation of every software component.
 
-The public source tree should be checked against the recommended layout in [Repository Structure](docs/REPOSITORY_STRUCTURE.md). The proposed layout is not a claim that all directories have already been extracted from the packaged source archive.
-
-## Data and privacy
-- The reported evaluation dataset is synthetic.
-- Do not commit real patient records or protected health information.
-- Do not upload credentials, API keys, local environment files or private clinical documents.
-- Check licences and permitted use before adding external documents to the retrieval knowledge base.
-
-## Limitations
-1. **No clinical validation:** no prospective or retrospective real-world validation has been reported.
-2. **Synthetic-data limitation:** performance on simulated records may not generalise to any hospital or patient group.
-3. **Outcome definitions:** prediction horizons, feature availability and target definitions require explicit documentation and clinical review.
-4. **Potential bias and leakage:** patient-level splitting does not rule out all leakage, confounding or sampling bias.
-5. **LLM limitations:** generated text may be incorrect or incomplete despite retrieval and citation checks.
-6. **Human oversight:** the prototype must not diagnose, prescribe, triage, delay care or replace clinical judgement.
-
-## Documentation
-- [Project overview](docs/PROJECT_OVERVIEW.md)
-- [Architecture and diagrams](docs/ARCHITECTURE.md)
-- [Research methods and evaluation](docs/RESEARCH_AND_EVALUATION.md)
-- [Recommended repository structure](docs/REPOSITORY_STRUCTURE.md)
-- [Reproducibility checklist](docs/REPRODUCIBILITY.md)
-
-## Roadmap
-- [ ] Extract and publish the readable source tree.
-- [ ] Add a tested dependency specification and verified installation instructions.
-- [ ] Document target definitions, feature lists, prediction horizons and missing-data handling.
-- [ ] Add a data dictionary and synthetic-data generation description.
-- [ ] Add scripts/notebooks that reproduce the reported evaluation results.
-- [ ] Add unit tests and an end-to-end smoke test.
-- [ ] Add non-sensitive screenshots.
-- [ ] Plan external validation with appropriate governance, ethics and data-access approvals.
-- [ ] Obtain clinical and methodological review before considering real-world use.
-
-## Citation
-For now, cite the repository URL and the version/date inspected. Add a formal software citation file after author/contributor metadata and release version are confirmed.
-
-**Research focus:** postoperative recovery, early mobilisation, critical care, interpretable machine learning and evidence-assisted digital health.
+Research prototype — synthetic-data experiments and local software integration demonstrated. Clinical validation remains future work.
