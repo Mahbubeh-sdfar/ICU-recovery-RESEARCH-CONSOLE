@@ -150,3 +150,16 @@ This project reflects an interest in the intersection of:
 ## Project status
 
 Research prototype — synthetic-data experiments and local software integration demonstrated. Clinical validation remains future work.
+
+## Documentation
+
+| Document | Description |
+|---|---|
+| [Project Overview](docs/PROJECT_OVERVIEW.md) | Research objectives, motivation and scope |
+| [System Architecture](docs/SYSTEM_ARCHITECTURE.md) | Technical architecture and agent workflow |
+| [Research Methodology](docs/RESEARCH_METHODOLOGY.md) | Dataset, prediction tasks and experimental design |
+| [Model Evaluation](docs/MODEL_EVALUATION.md) | Models, metrics and reported results |
+| [Reproducibility](docs/REPRODUCIBILITY.md) | Dataset generation and technical environment |
+| [Limitations and Ethics](docs/LIMITATIONS_AND_ETHICS.md) | Research limitations and responsible use |
+| [Demonstration Report](research_demonstration_report.md) | Documented software integration and testing |
+
